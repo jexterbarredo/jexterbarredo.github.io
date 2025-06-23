@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About - Jexter V. Barredo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-start: #0a0a0f;
+      --bg-end: #1a1a2e;
+      --highlight-blue: #007aff;
+      --gray: #8e8e93;
+      --blur: 15px;
+      --opacity: 0.15;
+      --border-light: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(ellipse at bottom, var(--bg-end), var(--bg-start));
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .profile-card {
+      max-width: 800px;
+      width: 100%;
+      background-color: rgba(255, 255, 255, var(--opacity));
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 0 0 1px var(--border-light);
+      border: 1px solid var(--border-light);
+      text-align: center;
+    }
+
+    .profile-card img {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 3px solid var(--highlight-blue);
+      box-shadow: 0 0 20px rgba(0, 122, 255, 0.5);
+    }
+
+    .profile-card h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: var(--highlight-blue);
+    }
+
+    .profile-card p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 20px;
+      line-height: 1.8;
+      text-align: justify;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-card">
+    <img src="your-photo.jpg" alt="Jexter V. Barredo">
+    <h1>Jexter V. Barredo</h1>
+    <p>I'm Jexter V. Barredo, a passionate individual with a strong interest in computer programming and science. From building logic-based solutions to understanding how the universe works, I find joy in uncovering the mechanics behind both technology and nature. Programming, for me, is not just a skill—it's a way to create, experiment, and make ideas come to life through structured thinking and innovation.</p>
+
+    <p>I created this side project as a way to combine my enthusiasm for space and technology. It serves as an interactive educational tool that provides informative content about current astronomical events and our solar system. Through this project, I aim to spark curiosity in others by making cosmic phenomena more approachable and exciting. It’s not just a showcase of my web development skills, but a personal mission to promote scientific literacy in a fun and visually engaging way. I believe that understanding the universe enriches our perspective of life on Earth—and this project is a small step toward sharing that wonder with others.</p>
+  </div>
+</body>
+</html>

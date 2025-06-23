@@ -1,0 +1,37 @@
+ .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 2s infinite ease-in-out alternate;
+    }
+
+    /* Shooting star */
+    .shooting-star {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, white, transparent);
+      opacity: 0.7;
+      transform: rotate(45deg);
+      animation: shoot 3s linear infinite;
+    }
+
+    @keyframes shoot {
+      0% {
+        transform: translate(-200px, -200px) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(150vw, 150vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.3; }
+      to { opacity: 1; }

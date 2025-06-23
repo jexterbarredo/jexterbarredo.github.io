@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Astronomy Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+         --iphone-bg-gradient-start: #0a0a0f;
+         --iphone-bg-gradient-end: #1a1a2e;
+         --iphone-blue: #007aff;
+         --iphone-blue-light: #34c759;
+         --iphone-gray: #8e8e93;
+         --glass-blur: 15px;
+         --glass-bg-opacity: 0.15;
+         --border-color-light: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+        }
+
+        body {
+         background: radial-gradient(ellipse at bottom, var(--iphone-bg-gradient-end) 0%, var(--iphone-bg-gradient-start) 100%);
+         font-family: 'Inter', sans-serif;
+         color: white;
+         min-height: 100vh;
+         overflow-x: hidden;
+         line-height: 1.6;
+        }
+        
+        /* --- Navbar Styles --- */
+        .navbar {
+          position: fixed;
+          top: 20px;
+          width: calc(100% - 40px);
+          left: 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px 15px;
+          background-color: rgba(44, 44, 46, var(--glass-bg-opacity));
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border-radius: 30px;
+          box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 0 0 1px var(--border-color-light);
+          z-index: 50;
+          transition: top 0.3s ease-out, opacity 0.3s ease-out;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar.hidden {
+          top: -100px;
+          opacity: 0;
+        }
+
+        .nav-left, .nav-right {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        
+        .nav-center {
+          font-weight: 600;
+          font-size: 1rem;
+          color: rgba(255,255,255,0.9);
+        }
+        
+        .nav-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          padding: 0 16px;
+          height: 40px;
+          border-radius: 20px;
+          font-size: 1rem;
+          font-weight: 500;
+          background: rgba(255, 255, 255, 0.1);
+          color: white;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        
+        .nav-button:hover {
+          background: rgba(255, 255, 255, 0.2);
+          transform: translateY(-1px);
+        }
+
+        /* --- Main Content & Cards --- */
+        main {
+         max-width: 900px;
+         margin: 120px auto 60px;
+         padding: 0 20px;
+         z-index: 1;
+         position: relative;
+        }
+
+        h1 {
+         text-align: center;
+         font-size: 3.5rem;
+         font-weight: 700;
+         text-shadow: 0 0 15px rgba(0, 122, 255, 0.6), 0 0 30px rgba(0, 122, 255, 0.4);
+         animation: neonPulse 2s infinite ease-in-out;
+         margin-bottom: 50px;
+         letter-spacing: -0.05em;
+        }
+
+        h2 {
+         font-size: 2.5rem;
+         text-align: center;
+         margin-bottom: 30px;
+         text-shadow: 0 0 10px rgba(0, 122, 255, 0.5);
+         font-weight: 600;
+        }
+
+        @keyframes neonPulse {
+         0%, 100% { text-shadow: 0 0 15px rgba(0, 122, 255, 0.6), 0 0 30px rgba(0, 122, 255, 0.4); }
+         50% { text-shadow: 0 0 25px rgba(0, 122, 255, 0.8), 0 0 50px rgba(0, 122, 255, 0.6); }
+        }
+@keyframes pulse {
+      0%, 100% {
+        text-shadow: 0 0 10px #00f7ff, 0 0 20px #00f7ff;
+      }
+      50% {
+        text-shadow: 0 0 20px #00f7ff, 0 0 40px #00f7ff;
+      }
+    }
+
+    .solar-system {
+      position: relative;
+      background-color: #000;
+      height: 300px;
+      overflow: hidden;
+      margin: 60px 0;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #00f7ff88;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 50px;
+      padding: 0 20px;
+    }
+
+    .planet {
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00f7ff55;
+      animation: orbit 10s linear infinite;
+    }
+
+    .sun {
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, #ffd700, #ff9900);
+      box-shadow: 0 0 30px #ffaa00;
+      animation: none;
+    }
+
+    .mercury { width: 8px; height: 8px; background: #aaa; animation-duration: 3s; }
+    .venus { width: 12px; height: 12px; background: #f5deb3; animation-duration: 4s; }
+    .earth { width: 14px; height: 14px; background: #2e8b57; animation-duration: 5s; }
+    .mars { width: 12px; height: 12px; background: #b22222; animation-duration: 6s; }
+    .jupiter { width: 24px; height: 24px; background: #d2b48c; animation-duration: 7s; }
+    .saturn { width: 22px; height: 22px; background: #deb887; animation-duration: 8s; }
+    .uranus { width: 16px; height: 16px; background: #00ffff; animation-duration: 9s; }
+    .neptune { width: 16px; height: 16px; background: #4169e1; animation-duration: 10s; }
+
+    @keyframes orbit {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+        .content-card, .form-section, .event-highlight {
+         background-color: rgba(255, 255, 255, var(--glass-bg-opacity));
+         backdrop-filter: blur(var(--glass-blur));
+         -webkit-backdrop-filter: blur(var(--glass-blur));
+         border-radius: 20px;
+         padding: 30px;
+         margin-bottom: 40px;
+         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), inset 0 0 0 1px var(--border-color-light);
+         border: 1px solid var(--border-color-light);
+        }
+
+        .content-card p, .event-highlight p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* --- Solar System --- */
+        .solar-system {
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         flex-wrap: wrap;
+         gap: 20px;
+         padding: 20px 0;
+         margin-bottom: 40px;
+        }
+
+        .planet {
+         font-size: 2rem;
+         cursor: pointer;
+         transition: transform 0.3s ease, text-shadow 0.3s ease;
+         user-select: none;
+        }
+
+        .planet:hover {
+         transform: scale(1.25) translateY(-5px);
+         text-shadow: 0 0 20px var(--iphone-blue);
+        }
+
+        #planet-info {
+          min-height: 120px;
+          transition: all 0.3s ease-in-out;
+        }
+        
+        #planet-info.active {
+          border-color: var(--iphone-blue);
+          box-shadow: 0 4px 30px rgba(0, 122, 255, 0.3), inset 0 0 0 1px var(--border-color-light);
+        }
+
+        #planet-info h3 {
+         font-size: 1.8rem; margin-bottom: 10px; color: var(--iphone-blue);
+        }
+
+        /* --- Explore More Section --- */
+        .explore-more {
+          margin-top: 60px;
+        }
+
+        .explore-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 20px;
+        }
+
+        .explore-item {
+          background-color: rgba(255, 255, 255, 0.08);
+          backdrop-filter: blur(var(--glass-blur));
+          border-radius: 15px;
+          padding: 25px;
+          box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+          text-align: center;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+          cursor: pointer;
+          border: 1px solid var(--border-color-light);
+        }
+
+        .explore-item:hover {
+          transform: translateY(-5px);
+          background-color: rgba(255, 255, 255, 0.12);
+          box-shadow: 0 5px 20px rgba(0, 122, 255, 0.25);
+        }
+
+        .explore-item h3 { font-size: 1.4rem; margin-bottom: 10px; color: var(--iphone-blue); }
+        .explore-item p { font-size: 0.95rem; color: rgba(255, 255, 255, 0.8); }
+
+        /* --- Form Section --- */
+        .form-section {
+          margin-top: 20px;
+        }
+
+        .form-section form { display: flex; flex-direction: column; gap: 15px; }
+
+        .form-section input {
+         padding: 14px 18px; border: none; border-radius: 12px; font-size: 1rem;
+         background-color: rgba(0, 0, 0, 0.2); color: white; caret-color: var(--iphone-blue);
+         box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3); transition: all 0.2s ease;
+         border: 1px solid rgba(255,255,255,0.1);
+        }
+        .form-section input::placeholder { color: var(--iphone-gray); }
+        .form-section input:focus {
+         outline: none; background-color: rgba(0, 0, 0, 0.3);
+         box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4), 0 0 0 2px var(--iphone-blue);
+        }
+
+        .form-section button {
+         padding: 14px; background-color: var(--iphone-blue); border: none;
+         border-radius: 12px; font-size: 1.1rem; color: white; font-weight: 600;
+         cursor: pointer; transition: background-color 0.2s ease, transform 0.1s ease;
+         box-shadow: 0 4px 15px rgba(0, 122, 255, 0.4);
+        }
+        .form-section button:hover { background-color: #006ee6; transform: translateY(-2px); }
+        .form-section button:active { transform: translateY(0); box-shadow: 0 2px 10px rgba(0, 122, 255, 0.3); }
+
+        /* --- Submission Message Pop-up --- */
+        .submission-message {
+          background-color: rgba(20, 20, 25, 0.8);
+          backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+          position: fixed; top: 50%; left: 50%;
+          transform: translate(-50%, -50%) scale(0.9);
+          padding: 30px 40px; border-radius: 20px;
+          box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5); text-align: center;
+          opacity: 0; visibility: hidden;
+          transition: all 0.3s ease-in-out;
+          z-index: 100; border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .submission-message.show { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+        .submission-message h3 { color: var(--iphone-blue-light); font-size: 1.8rem; margin-bottom: 15px; }
+        .submission-message p { font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); }
+        
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 768px) {
+          body { font-size: 14px; }
+          .navbar { width: calc(100% - 20px); left: 10px; top: 10px; padding: 8px 10px; }
+          .nav-button .btn-text { display: none; } /* Hide text on mobile */
+          .nav-button { padding: 0; width: 44px; }
+          h1 { font-size: 2.5rem; margin-top: 90px; }
+          h2 { font-size: 2rem; }
+          main { margin-top: 100px; }
+        }
+    </style>
+</head>
+<body>
+
+   <div class="navbar" id="navbar">
+  <div class="nav-left">
+    <button class="nav-button" title="Home">
+      🏠<span class="btn-text">Home</span>
+    </button>
+  </div>
+  <div class="nav-center">
+    <span>Astronomy Explorer</span>
+  </div>
+  <div class="nav-right">
+    <a href="about.html" target="_blank" class="nav-button" title="About">
+      ℹ️<span class="btn-text">About</span>
+    </a>
+    <button class="nav-button" title="Contact">
+      ✉️<span class="btn-text">Contact</span>
+    </button>
+  </div>
+</div>
+    <main>
+        <h1>Explore the Cosmos</h1>
+        <div class="content-card">
+            <p>Astronomy, the ancient science of observing the stars, planets, and galaxies that populate our universe, continues to captivate humanity. From the dawn of civilization, we've looked to the heavens, charting the movements of celestial bodies and pondering our place within the vast cosmic tapestry.</p>
+            <p>Modern astronomy combines cutting-edge technology with the boundless curiosity that has driven explorers for millennia. Whether it’s the dazzling spectacle of a meteor shower or the enigma of dark matter, astronomy connects us to something profoundly larger than ourselves.</p>
+        </div>
+
+         <div class="solar-system" aria-label="Interactive Solar System">
+            <div class="planet sun" data-planet="sun" title="Sun"></div>
+            <div class="planet mercury" data-planet="mercury" title="Mercury"></div>
+            <div class="planet venus" data-planet="venus" title="Venus"></div>
+            <div class="planet earth" data-planet="earth" title="Earth"></div>
+            <div class="planet mars" data-planet="mars" title="Mars"></div>
+            <div class="planet jupiter" data-planet="jupiter" title="Jupiter"></div>
+            <div class="planet saturn" data-planet="saturn" title="Saturn"></div>
+            <div class="planet uranus" data-planet="uranus" title="Uranus"></div>
+            <div class="planet neptune" data-planet="neptune" title="Neptune"></div>
+        </div>
+
+        <div id="planet-info" class="content-card">
+            <h3>Select a Planet to Learn More</h3>
+            <p>Click on any celestial body above to reveal fascinating facts about it!</p>
+        </div>
+
+        <section class="event-highlight">
+            <h2>Celestial Wonders Gathering 2025</h2>
+            <p>Experience the universe like never before at the <strong>Celestial Wonders Gathering 2025</strong>! This special evening includes a total lunar eclipse, Saturn’s closest approach, and a guided meteor shower viewing. Each phenomenon offers a rare and beautiful spectacle. Don’t just look up—be part of the experience!</p>
+        </section>
+<section class="explore-more">
+  <h2>Discover More Topics</h2>
+  <div class="explore-grid">
+    <a href="exoplanets.html" class="explore-item button-link">
+      <h3>Exoplanets</h3>
+      <p>Journey to distant worlds beyond our solar system.</p>
+    </a>
+    <a href="blackholes.html" class="explore-item button-link">
+      <h3>Black Holes</h3>
+      <p>Unravel the mysteries of these cosmic behemoths.</p>
+    </a>
+    <a href="galaxies.html" class="explore-item button-link">
+      <h3>Galaxies</h3>
+      <p>Explore the magnificent cosmic islands of stars.</p>
+    </a>
+    <a href="nebulae.html" class="explore-item button-link">
+      <h3>Nebulae</h3>
+      <p>Witness the stunning birthplaces of stars.</p>
+    </a>
+  </div>
+</section>
+    <div id="submissionSuccess" class="submission-message">
+        <h3>✅ Success!</h3>
+        <p>Thank you for signing up! We'll keep you updated.</p>
+    </div>
+    
+    <div id="tempMessage" class="submission-message" style="background-color: rgba(20, 80, 150, 0.8);">
+         <h3 style="color: #58aaff;">Navigating</h3>
+         <p>This is just a demo. You would navigate here.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let lastScrollY = window.scrollY;
+            const navbar = document.getElementById('navbar');
+            const planetInfoBox = document.getElementById('planet-info');
+
+            // --- Navbar hide/show on scroll ---
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > lastScrollY && window.scrollY > 80) {
+                    navbar.classList.add('hidden');
+                } else {
+                    navbar.classList.remove('hidden');
+                }
+                lastScrollY = window.scrollY;
+            });
+
+            // --- Planet Data ---
+            const planetData = {
+                sun: { name: "The Sun", description: "Our star, a yellow dwarf, providing the light and heat essential for life on Earth. Its immense gravity holds the planets in orbit." },
+                mercury: { name: "Mercury", description: "The smallest planet and closest to the Sun. It has a heavily cratered surface and experiences extreme temperature variations." },
+                venus: { name: "Venus", description: "Earth's 'sister planet' due to its similar size. It has a thick, toxic atmosphere, resulting in a runaway greenhouse effect." },
+                earth: { name: "Earth", description: "Our home planet, the third from the Sun. It is the only known celestial body to harbor life, with vast oceans and diverse ecosystems." },
+                mars: { name: "Mars", description: "The 'Red Planet', known for its iron oxide surface. Mars has polar ice caps, volcanoes, and evidence of ancient water." },
+                jupiter: { name: "Jupiter", description: "The largest planet, a gas giant known for its Great Red Spot. It has a strong magnetic field and many moons." },
+                saturn: { name: "Saturn", description: "Famous for its stunning system of rings, composed mainly of ice particles. Saturn is the second-largest planet." },
+                uranus: { name: "Uranus", description: "An ice giant known for its unique sideways rotation. Its methane atmosphere gives it a blue-green color." },
+                neptune: { name: "Neptune", description: "The farthest known planet from the Sun, an ice giant with strong winds and large, dark storms." }
+            };
+
+            // --- Planet click listeners ---
+            document.querySelectorAll('.planet').forEach(planet => {
+                planet.addEventListener('click', function () {
+                    const planetKey = this.dataset.planet;
+                    const info = planetData[planetKey];
+                    if (info) {
+                        planetInfoBox.innerHTML = `<h3>${info.name}</h3><p>${info.description}</p>`;
+                        planetInfoBox.classList.add('active');
+                        planetInfoBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            });
+        });
+        
+        // --- Form submission handler ---
+        function handleSubmit(event) {
+            event.preventDefault();
+            const successMessage = document.getElementById('submissionSuccess');
+            successMessage.classList.add('show');
+            document.getElementById('contactForm').reset();
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 3000);
+        }
+
+        // --- Temporary Message for Explore section (replaces alerts) ---
+        function showTemporaryMessage(topic) {
+             const tempMessageBox = document.getElementById('tempMessage');
+             tempMessageBox.querySelector('h3').textContent = `Exploring ${topic}`;
+             tempMessageBox.querySelector('p').textContent = `This is a demo. In a real app, you would navigate to the ${topic} page.`;
+             tempMessageBox.classList.add('show');
+             setTimeout(() => {
+                tempMessageBox.classList.remove('show');
+            }, 2500);
+        }
+    </script>
+
+<div class="star" style="top: 10%; left: 20%;"></div>
+  <div class="star" style="top: 30%; left: 60%;"></div>
+  <div class="star" style="top: 70%; left: 40%;"></div>
+  <div class="star" style="top: 80%; left: 75%;"></div>
+  <div class="star" style="top: 15%; left: 85%;"></div>
+
+</body>
+</html>
